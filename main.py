@@ -1,12 +1,14 @@
 # Основной программный код телеграм-бота
 
 # Импортирования нужных модулей для работы с ботом
-from dispatcher import dp
-from aiogram import executor
+from dispatcher import dp, bot
+from aiogram import executor, types
 import actions
+import buttons as mark
 
-from database import botDB # Работа с базами данных
-botDB = botDB('db.db') # Экземпляр объекта класса с инициализацией базы данных
+# Импорт базы данных и ее инициализация
+from database import botDB
+botDB = botDB('db.db')
 
 
 

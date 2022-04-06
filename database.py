@@ -10,10 +10,15 @@ class botDB:
         self.conn = sqlite3.connect(db_file)
         self.cursor = self.conn.cursor()
 
-    def add_users(self,user_id):
-        """Добовляем нового пользователя"""
-        self.cursor.execute("INSERT INTO 'users' ('код_с','фамилия') VALUES(?,?)",(user_id))
-        return self.conn.commit()
+    def account_exist(self,user_id, login, password):
+        """Проверяем есть ли аккаунт в базе данных"""
+
+
+    def all_users(self):
+        """Вывод всех сотрудников завода"""
+        result = self.cursor.execute("SELECT * FROM 'users'")
+        return result
+
 
     def close(self):
         """Закрытия соединения с БД"""
