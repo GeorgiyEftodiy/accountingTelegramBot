@@ -2,6 +2,8 @@
 
 # Импорт модулей
 from aiogram import types
+
+import database
 from dispatcher import dp, bot
 import config
 import re
