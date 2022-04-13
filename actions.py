@@ -28,7 +28,7 @@ async def startmenu(message: types.Message):
     await bot.send_message(message.from_user.id,'Вы нажимаете на кнопку - записать - и тут вы сможете записать свою работу за сегодня')
 
 # При нажатии на кнопку -Просмотреть работу-
-@dp.message_handler(commands=['Просмотреть_работу💹'])
+@dp.message_handler(commands=['Личный_кабинет💹'])
 async def startmenu(message: types.Message):
     await bot.send_message(message.from_user.id,'Тут выводится результаты работы за текущий месяц')
 
