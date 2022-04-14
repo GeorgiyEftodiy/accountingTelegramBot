@@ -37,7 +37,6 @@ async def startmenu(message: types.Message):
 @dp.message_handler(commands=['Сотрудники👨‍🦰'])
 async def startmenu(message: types.Message):
     await message.reply(botDB.all_users())
-
     await bot.send_message(message.from_user.id,'Тут выводися список сотрудников')
 
 # При нажатии на кнопку -Итоги месяца-

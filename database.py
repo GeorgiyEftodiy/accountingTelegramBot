@@ -22,7 +22,6 @@ class botDB:
         text = '\n\n'.join([', '.join(map(str, x)) for x in users])
         return str(text)
 
-
     def select_production(self):
         """Выборка производства"""
 
