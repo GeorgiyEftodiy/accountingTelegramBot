@@ -14,11 +14,17 @@ class botDB:
         """Проверяем есть ли аккаунт в базе данных"""
 
 
-    def all_users(self, last_name, first_name, otchestvo, doljnost):
+    def all_users(self):
         """Вывод всех сотрудников завода"""
         self.cursor = self.conn.cursor()
-        self.cursor.execute("SELECT * FROM users WHERE row = ?, ?, ?, ? ", (last_name, first_name, otchestvo, doljnost))
-        data = self.cursor.fetchone()
+        self.cursor.execute("SELECT * FROM users")
+        users = self.cursor.fetchall()
+        text = '\n\n'.join([', '.join(map(str, x)) for x in users])
+        return str(text)
+
+
+    def select_production(self):
+        """Выборка производства"""
 
 
 
