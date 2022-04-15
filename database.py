@@ -17,9 +17,9 @@ class botDB:
     def all_users(self):
         """Вывод всех сотрудников завода"""
         self.cursor = self.conn.cursor()
-        self.cursor.execute("SELECT * FROM users")
+        self.cursor.execute("SELECT user_id, last_name, first_name, otchestvo, doljnost  FROM users")
         users = self.cursor.fetchall()
-        text = '\n\n'.join([', '.join(map(str, x)) for x in users])
+        text = '\n\n'.join([' - '.join(map(str, x)) for x in users])
         return str(text)
 
     def select_production(self):

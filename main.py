@@ -11,5 +11,17 @@ from database import botDB
 botDB = botDB('db.db')
 
 
+#                               ------ Выполнения авторизации сотрудника/админа ------
+# Вход в аккаунт админа
+@dp.message_handler(commands=['admin'])
+async def add_work(message: types.Message):
+    await bot.send_message(message.from_user.id,'Введите пароль админа')
+
+# Авторизация сотрудника
+@dp.message_handler(commands=['Авторизация👮‍♀'])
+async def sign(message: types.Message):
+    await bot.send_message(message.from_user.id,'Введите свой логин-пароль', reply_markup = mark.userMenu)
+
+
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
