@@ -10,22 +10,40 @@ class botDB:
         self.conn = sqlite3.connect(db_file)
         self.cursor = self.conn.cursor()
 
-    def account_exist(self,user_id, login, password):
-        """Проверяем есть ли аккаунт в базе данных"""
+
+    def add_user(self,user_id):
+        """Добавление нового пользователя"""
+        with self.conn:
+            self.cursor.execute("INSERT INTO 'users' (user_id) VALUES(?)", (user_id,))
+            self.conn.commit()
+
+
+    def user_exist(self,user_id):
+        """Проверка пользователя в БД"""
+        with self.conn:
+            result = self.cursor.execute("SELECT * FROM 'users' WHERE 'user_id' = ?", (user_id)).fetchall()
+            return bool(len(result))
+
+
+    def add_name(self, first_name,user_id):
+        """Добавления имени сотрудника"""
+        with self.conn:
+            self.cursor.execute("INSERT INTO 'users' (first_name) VALUES(?) WHERE 'user_id' = ?", (first_name, user_id,))
+            self.conn.commit()
+
+    def add_lastname(self, last_name,user_id):
+        """Добавление фамилии сотрудника"""
+        with self.conn:
+            self.cursor.execute("INSERT INTO 'users' (last_name) VALUES (?) WHERE 'user_id' = ?", (last_name,user_id,))
+            self.conn.commit()
 
 
     def all_users(self):
         """Вывод всех сотрудников завода"""
-        self.cursor = self.conn.cursor()
-        self.cursor.execute("SELECT user_id, last_name, first_name, otchestvo, doljnost  FROM users")
+        self.cursor.execute("SELECT user_id, last_name, first_name, doljnost  FROM users")
         users = self.cursor.fetchall()
         text = '\n\n'.join([' - '.join(map(str, x)) for x in users])
         return str(text)
-
-    def select_production(self):
-        """Выборка производства"""
-
-
 
     def close(self):
         """Закрытия соединения с БД"""
