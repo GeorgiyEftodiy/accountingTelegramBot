@@ -22,18 +22,28 @@ async def startmenu(message: types.Message):
     await bot.send_message(message.from_user.id,'Добро пожаловать {0.first_name}, '
                                                 'это телеграм бот создан для сотрудников завода по производству резиновых деталей.\n'
                                                 'Для начала работы с нашим ботом введите пожалуйста пароль:\n'
-                                                '(Не давайте пароль постороним людям!)'.format(message.from_user), reply_markup = mark.sign)
+                                                '(Не давайте пароль постороним людям!)'.format(message.from_user), reply_markup= mark.sign)
 
+#@dp.message_handler(commands=['andrei3344'])
+#async def parol(message: types.Message):
+#    await bot.send_message(message.from_user.id,'Вы ввели правильный пароль, теперь вы можете авторизоваться', reply_markup = mark.sign)
 
-# Вход в аккаунт админа
-@dp.message_handler(commands=['admin'])
-async def add_work(message: types.Message):
-    await bot.send_message(message.from_user.id,'Введите пароль админа')
 
 # Авторизация сотрудника
 @dp.message_handler(commands=['Авторизация👮‍♀'])
 async def sign(message: types.Message):
-    await bot.send_message(message.from_user.id,'Введите свой логин-пароль', reply_markup = mark.userMenu)
+    if (not botDB.user_exist(message.from_user.id)):
+        botDB.add_user(message.from_user.id)
+        await bot.send_message(message.from_user.id, 'Укажите ваше имя и фамилию пожалуйста')
+    else:
+        await bot.send_message(message.from_user.id, 'Вы уже зарегестрированы. Добро пожаловать!', reply_markup = mark.userMenu)
+
+@dp.message_handler()
+async def registration(message: types.Message):
+    if message.chat.type == 'private':
+       pass
+
+
 # ----------------------
 
 

@@ -14,15 +14,13 @@ class botDB:
     def add_user(self,user_id):
         """Добавление нового пользователя"""
         with self.conn:
-            self.cursor.execute("INSERT INTO 'users' (user_id) VALUES(?)", (user_id,))
-            self.conn.commit()
-
+            return self.cursor.execute("INSERT INTO 'users' (user_id) VALUES(?)", (user_id,))
 
     def user_exist(self,user_id):
         """Проверка пользователя в БД"""
         with self.conn:
-            result = self.cursor.execute("SELECT * FROM 'users' WHERE 'user_id' = ?", (user_id)).fetchall()
-            return bool(len(result))
+            result = self.cursor.execute("SELECT 'id' FROM 'users' WHERE 'user_id' = ?", (user_id,))
+            return bool(len(result.fetchall()))
 
 
     def add_name(self, first_name,user_id):
