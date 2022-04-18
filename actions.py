@@ -2,16 +2,14 @@
 
 # Импорт модулей
 from aiogram import types
-
-import database
 from dispatcher import dp, bot
 import config
 import re
-
-# Импорт базы данных и ее инициализация
-from database import botDB
-botDB = botDB('db.db')
 import buttons as mark
+
+from database import botDB # Импорт базы данных и ее инициализация
+botDB = botDB('db.db')
+
 
 
 
@@ -23,11 +21,6 @@ async def startmenu(message: types.Message):
                                                 'это телеграм бот создан для сотрудников завода по производству резиновых деталей.\n'
                                                 'Для начала работы с нашим ботом введите пожалуйста пароль:\n'
                                                 '(Не давайте пароль постороним людям!)'.format(message.from_user), reply_markup= mark.sign)
-
-#@dp.message_handler(commands=['andrei3344'])
-#async def parol(message: types.Message):
-#    await bot.send_message(message.from_user.id,'Вы ввели правильный пароль, теперь вы можете авторизоваться', reply_markup = mark.sign)
-
 
 # Авторизация сотрудника
 @dp.message_handler(commands=['Авторизация👮‍♀'])
@@ -42,7 +35,6 @@ async def sign(message: types.Message):
 async def registration(message: types.Message):
     if message.chat.type == 'private':
        pass
-
 
 # ----------------------
 

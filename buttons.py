@@ -8,12 +8,14 @@ from aiogram.types import ReplyKeyboardMarkup,\
 signbtn = KeyboardButton('/Авторизация👮‍♀')
 sign = ReplyKeyboardMarkup(resize_keyboard=True).add(signbtn)
 
+
 # ------ Меню сторудников ------
 zapisBtn = KeyboardButton('/Записать✅')
 prosmotrlBtn = KeyboardButton('/Личный_кабинет👨‍🦰')
 usersBtn = KeyboardButton('/Сотрудники👥')
 rucovodstvoBtn = KeyboardButton('/Руководство🗣')
 userMenu = ReplyKeyboardMarkup(resize_keyboard=True, row_width=2).add(zapisBtn, prosmotrlBtn, usersBtn, rucovodstvoBtn)
+
 
 # ------ Меню Администратора ------
 usersBtn = KeyboardButton('/Сотрудники✅')
