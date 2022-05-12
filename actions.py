@@ -2,6 +2,8 @@
 
 # Импорт модулей
 from aiogram import types
+
+import database
 from dispatcher import dp, bot
 import config
 import re
@@ -10,25 +12,35 @@ import buttons as mark
 from database import botDB # Импорт базы данных и ее инициализация
 botDB = botDB('db.db')
 
-
+prohib = ('@','!','$')
 
 #                ------------- Выполнения авторизации сотрудника/админа -------------
-users_id = []
-# При команде /start
-@dp.message_handler(commands=['start'])
-async def startmenu(message: types.Message):
-    await bot.send_message(message.from_user.id,'Добро пожаловать {0.first_name}, '
-                                                'это телеграм бот создан для сотрудников завода по производству резиновых деталей.\n'
-                                                'Для начала работы с нашим ботом введите пожалуйста пароль:\n'
-                                                '(Не давайте пароль постороним людям!)'.format(message.from_user), reply_markup= mark.sign)
+# Инициализация и регистрация пользователя
+@dp.message_handler(commands = 'start')
+async def start(message: types.Message):
+    if (not botDB.user_exist(message.from_user.id)):
+        botDB.add_user(message.from_user.id)
+        await bot.send_message(message.from_user.id, 'Вы были успешно зарегистрированы в базе данных!\n'
+                                                     'Пожалуйста введите ваше имя и фамилию через пробел!\n'
+                                                     'Пример:Иванов Иван')
+    else:
+        await bot.send_message(message.from_user.id, 'Welcome')
 
 # Авторизация сотрудника
-@dp.message_handler(content_types=['text'])
-async def authorization(message):
-    if message.text == '👮‍♀ Авторизация':
-        await bot.send_message(message.from_user.id,'Для начала введите пароль нашего бота чтобы продолжить работу')
+@dp.message_handler()
+async def registration(message: types.Message,):
+    if message.chat.type == 'private':
+        if message.text == '👮‍♀ Авторизация':
+            await bot.send_message(message.from_user.id, 'Регистрация прошла успешно!', reply_markup = mark.userMenu)
 
-
+        else:
+            if botDB.get_signup(message.from_user.id) == 'setname':
+                if '@' in message.text or '/' in message.text:
+                    await bot.send_message(message.from_user.id, 'Вы ввели запрещенные символы! Пожалуйста, постарайтесь избегать их!')
+                else:
+                    botDB.set_name(message.from_user.id, message.text)
+                    botDB.set_signup(message.from_user.id, "done")
+                    await bot.send_message(message.from_user.id, 'Регистрация прошла успешно!', reply_markup = mark.userMenu)
 
 
 # ----------------------
