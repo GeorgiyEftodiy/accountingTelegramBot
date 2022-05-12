@@ -12,9 +12,7 @@ import buttons as mark
 from database import botDB # Импорт базы данных и ее инициализация
 botDB = botDB('db.db')
 
-prohib = ('@','!','$')
 
-#                ------------- Выполнения авторизации сотрудника/админа -------------
 # Инициализация и регистрация пользователя
 @dp.message_handler(commands = 'start')
 async def start(message: types.Message):
@@ -23,15 +21,17 @@ async def start(message: types.Message):
         await bot.send_message(message.from_user.id, 'Вы были успешно зарегистрированы в базе данных!\n'
                                                      'Пожалуйста введите ваше имя и фамилию через пробел!\n'
                                                      'Пример:Иванов Иван')
+
     else:
         await bot.send_message(message.from_user.id, 'Welcome')
 
+
 # Авторизация сотрудника
 @dp.message_handler()
-async def registration(message: types.Message,):
+async def registration(message: types.Message):
     if message.chat.type == 'private':
         if message.text == '👮‍♀ Авторизация':
-            await bot.send_message(message.from_user.id, 'Регистрация прошла успешно!', reply_markup = mark.userMenu)
+            pass
 
         else:
             if botDB.get_signup(message.from_user.id) == 'setname':
@@ -41,11 +41,6 @@ async def registration(message: types.Message,):
                     botDB.set_name(message.from_user.id, message.text)
                     botDB.set_signup(message.from_user.id, "done")
                     await bot.send_message(message.from_user.id, 'Регистрация прошла успешно!', reply_markup = mark.userMenu)
-
-
-# ----------------------
-
-
 
 
 
