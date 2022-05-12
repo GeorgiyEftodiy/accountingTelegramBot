@@ -12,8 +12,8 @@ botDB = botDB('db.db')
 
 
 
-
 #                ------------- Выполнения авторизации сотрудника/админа -------------
+users_id = []
 # При команде /start
 @dp.message_handler(commands=['start'])
 async def startmenu(message: types.Message):
@@ -23,20 +23,21 @@ async def startmenu(message: types.Message):
                                                 '(Не давайте пароль постороним людям!)'.format(message.from_user), reply_markup= mark.sign)
 
 # Авторизация сотрудника
-@dp.message_handler(commands=['Авторизация👮‍♀'])
-async def sign(message: types.Message):
-    if (not botDB.user_exist(message.from_user.id)):
-        botDB.add_user(message.from_user.id)
-        await bot.send_message(message.from_user.id, 'Укажите ваше имя и фамилию пожалуйста')
-    else:
-        await bot.send_message(message.from_user.id, 'Вы уже зарегестрированы. Добро пожаловать!', reply_markup = mark.userMenu)
+@dp.message_handler(content_types=['text'])
+async def authorization(message):
+    if message.text == '👮‍♀ Авторизация':
+        await bot.send_message(message.from_user.id,'Для начала введите пароль нашего бота чтобы продолжить работу')
 
-@dp.message_handler()
-async def registration(message: types.Message):
-    if message.chat.type == 'private':
-       pass
+
+
 
 # ----------------------
+
+
+
+
+
+
 
 
 # При нажатии на кнопку -Записать✅-

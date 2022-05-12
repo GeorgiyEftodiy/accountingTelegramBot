@@ -5,7 +5,7 @@ from aiogram.types import ReplyKeyboardMarkup,\
                          KeyboardButton
 
 # ------ Авторизация ------
-signbtn = KeyboardButton('/Авторизация👮‍♀')
+signbtn = KeyboardButton('👮‍♀ Авторизация')
 sign = ReplyKeyboardMarkup(resize_keyboard=True).add(signbtn)
 
 

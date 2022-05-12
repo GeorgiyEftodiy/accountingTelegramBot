@@ -12,27 +12,20 @@ class botDB:
 
 
     def add_user(self,user_id):
-        """Добавление нового пользователя"""
+        """Добавление нового пользователя в БД"""
         with self.conn:
             return self.cursor.execute("INSERT INTO 'users' (user_id) VALUES(?)", (user_id,))
 
     def user_exist(self,user_id):
-        """Проверка пользователя в БД"""
+        """Проверка есть ли пользователя в БД"""
         with self.conn:
-            result = self.cursor.execute("SELECT 'id' FROM 'users' WHERE 'user_id' = ?", (user_id,))
+            result = self.cursor.execute("SELECT * FROM 'users' WHERE 'user_id' = ?", (user_id,))
             return bool(len(result.fetchall()))
 
-
-    def add_name(self, first_name,user_id):
-        """Добавления имени сотрудника"""
+    def add_info(self, last_name, first_name, user_id):
+        """Добавления информации о сотруднике"""
         with self.conn:
-            self.cursor.execute("INSERT INTO 'users' (first_name) VALUES(?) WHERE 'user_id' = ?", (first_name, user_id,))
-            self.conn.commit()
-
-    def add_lastname(self, last_name,user_id):
-        """Добавление фамилии сотрудника"""
-        with self.conn:
-            self.cursor.execute("INSERT INTO 'users' (last_name) VALUES (?) WHERE 'user_id' = ?", (last_name,user_id,))
+            self.cursor.execute("UPDATE 'users' SET 'last_name' = ?, 'first_name' = ? WHERE 'user_id' = ?", (last_name, first_name, user_id,))
             self.conn.commit()
 
 
