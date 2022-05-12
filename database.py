@@ -21,10 +21,10 @@ class botDB:
         result = self.cursor.execute("SELECT id FROM users WHERE user_id = ?", (user_id,))
         return bool(len(result.fetchall()))
 
-    def set_name(self, name, user_id):
+    def set_name(self, user_id, name):
         """Добавления имени пользователя"""
         with self.conn:
-            return self.cursor.execute("UPDATE 'users' SET 'name' = ? WHERE 'user_id' = ?",(name, user_id,))
+            return self.cursor.execute("UPDATE users SET name = ? WHERE user_id =?",(name, user_id,))
 
     def get_signup(self, user_id):
         """Получение этапа регистрации пользователя"""
