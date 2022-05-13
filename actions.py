@@ -22,12 +22,27 @@ async def start(message: types.Message):
                                                      'Введите пожалуйста ваше имя и фамилию через пробел\n'
                                                      'Пример:Иванов Иван')
     else:
-        await bot.send_message(message.from_user.id, 'Вы уже зарегистрированы! Удачной работы!',reply_markup=mark.userMenu)
+        if botDB.get_signup(message.from_user.id) == 'setname':
+            await bot.send_message(message.from_user.id, 'Вы еще не ввели ваше имя и фамилию! Введите пожалуйста ваше имя и фамилию через пробел\n'
+                                                         'Пример: Иванов Иван')
+        else:
+            await bot.send_message(message.from_user.id, 'Вы уже зарегистрированы! Удачной работы!',reply_markup=mark.userMenu)
+
+# Руководство по пользованию бота
+@dp.message_handler(commands=['help'])
+async def general(message: types.Message):
+    await bot.send_message(message.from_user.id,'Тут выводится общая информация всей работы за месяц')
+
+@dp.message_handler(commands=['add'])
+async def general(message: types.Message):
+    await bot.send_message(message.from_user.id, 'Выберите тип деталей: ', reply_markup=mark.detali)
+
 
 # Регистрация пользователя
-@dp.message_handler()
-async def sign(message: types.Message):
+@dp.message_handler(content_types='text')
+async def sign(message):
     if message.chat.type == 'private':
+        # Запись ФИО для нового пользователя
         if botDB.get_signup(message.from_user.id) == 'setname':
             if '@' in message.text or '/' in  message.text:
                 await bot.send_message(message.from_user.id, 'Вы ввели запрещенный символ!')
@@ -35,6 +50,29 @@ async def sign(message: types.Message):
                 botDB.set_name(message.from_user.id, message.text)
                 botDB.set_signup(message.from_user.id, "succes")
                 await bot.send_message(message.from_user.id, 'Регистрация прошла успешно! Удачной работы!', reply_markup=mark.userMenu)
+
+        # Работа основного меню сотрудника
+        if message.text == '👨‍🦰 Личный кабинет':
+            await bot.send_message(message.from_user.id, 'Ваш аккаунт: ' + botDB.get_name(message.from_user.id) + '\n'
+                                                         'Ваш телеграм ID: ' + str(message.from_user.id) + '\n'
+                                                         'Сделанных мешков: \n'
+                                                         'Заработано денег: ')
+        if message.text == '👥 Сотрудники':
+            await bot.send_message(message.from_user.id, 'Список сотрудников: ')
+            await bot.send_message(message.from_user.id, botDB.all_users())
+
+        # Запись работ сотрудников
+        if message.text == '✅ Записать':
+            await bot.send_message(message.from_user.id, 'Сейчас мы запишем вашу работу!\n'
+                                                         'Выберите тип деталей которые вы произвели: ', reply_markup=mark.detali)
+        if message.text == '50-тки':
+            await bot.send_message(message.from_user.id, '50')
+        if message.text == '100-тки':
+            await bot.send_message(message.from_user.id, '100')
+
+        if message.text == '🔙 Меню':
+            await bot.send_message(message.from_user.id, 'Обратно в главное меню', reply_markup=mark.userMenu)
+
 
 
 

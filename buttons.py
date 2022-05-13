@@ -4,18 +4,17 @@
 from aiogram.types import ReplyKeyboardMarkup,\
                          KeyboardButton
 
-# ------ Авторизация ------
-signbtn = KeyboardButton('👮‍♀ Авторизация')
-sign = ReplyKeyboardMarkup(resize_keyboard=True).add(signbtn)
-
-
 # ------ Меню сторудников ------
-zapisBtn = KeyboardButton('/Записать✅')
-prosmotrlBtn = KeyboardButton('/Личный_кабинет👨‍🦰')
-usersBtn = KeyboardButton('/Сотрудники👥')
-rucovodstvoBtn = KeyboardButton('/Руководство🗣')
-userMenu = ReplyKeyboardMarkup(resize_keyboard=True, row_width=2).add(zapisBtn, prosmotrlBtn, usersBtn, rucovodstvoBtn)
+zapisBtn = KeyboardButton('✅ Записать')
+prosmotrlBtn = KeyboardButton('👨‍🦰 Личный кабинет')
+usersBtn = KeyboardButton('👥 Сотрудники')
+userMenu = ReplyKeyboardMarkup(resize_keyboard=True, row_width=2).add(zapisBtn, prosmotrlBtn, usersBtn)
 
+# ------ Тип деталей------
+fifty = KeyboardButton('50-тки')
+onehundred = KeyboardButton('100-тки')
+backmenu = KeyboardButton('🔙 Меню')
+detali = ReplyKeyboardMarkup(resize_keyboard=True, row_width=2).add(fifty, onehundred, backmenu)
 
 # ------ Меню Администратора ------
 usersBtn = KeyboardButton('/Сотрудники✅')
