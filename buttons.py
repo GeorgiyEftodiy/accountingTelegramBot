@@ -2,7 +2,12 @@
 
 # Импорт нужных модулей
 from aiogram.types import ReplyKeyboardMarkup,\
-                         KeyboardButton
+                         KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup
+
+# keyboards.py
+inline_btn_1 = InlineKeyboardButton(text='50-тки', callback_data='50-тки')
+inline_btn_2 = InlineKeyboardButton(text='100-тки', callback_data='100-тки')
+inline_detali = InlineKeyboardMarkup(row_width=2).add(inline_btn_1, inline_btn_2)
 
 # ------ Меню сторудников ------
 zapisBtn = KeyboardButton('✅ Записать')

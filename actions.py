@@ -7,6 +7,7 @@ from dispatcher import dp, bot
 import config
 import re
 import buttons as mark
+import callback
 
 from database import botDB # Импорт базы данных и ее инициализация
 botDB = botDB('db.db')
@@ -30,18 +31,18 @@ async def start(message: types.Message):
 
 # Руководство по пользованию бота
 @dp.message_handler(commands=['help'])
-async def general(message: types.Message):
+async def general(message):
     await bot.send_message(message.from_user.id,'Тут выводится общая информация всей работы за месяц')
-
-@dp.message_handler(commands=['add'])
-async def general(message: types.Message):
-    await bot.send_message(message.from_user.id, 'Выберите тип деталей: ', reply_markup=mark.detali)
+    if message.chat.type == 'private':
+        await bot.send_message(message.from_user.id, 'Тут выводится общая информация всей работы за месяц' + message.text)
 
 
-# Регистрация пользователя
+
+# Обрабатывания функций
 @dp.message_handler(content_types='text')
 async def sign(message):
     if message.chat.type == 'private':
+
         # Запись ФИО для нового пользователя
         if botDB.get_signup(message.from_user.id) == 'setname':
             if '@' in message.text or '/' in  message.text:
@@ -53,25 +54,20 @@ async def sign(message):
 
         # Работа основного меню сотрудника
         if message.text == '👨‍🦰 Личный кабинет':
-            await bot.send_message(message.from_user.id, 'Ваш аккаунт: ' + botDB.get_name(message.from_user.id) + '\n'
-                                                         'Ваш телеграм ID: ' + str(message.from_user.id) + '\n'
-                                                         'Сделанных мешков: \n'
-                                                         'Заработано денег: ')
+            await bot.send_message(message.from_user.id, '👨‍🦰 Ваш аккаунт: ' + botDB.get_name(message.from_user.id) + '\n'
+                                                         '✳️ Ваш телеграм ID: ' + str(message.from_user.id) + '\n'
+                                                         '✔️ Сделанных мешков: \n'
+                                                         '✔️ Заработано денег: ')
         if message.text == '👥 Сотрудники':
-            await bot.send_message(message.from_user.id, 'Список сотрудников: ')
+            await bot.send_message(message.from_user.id, 'Список сотрудников ⬇️')
             await bot.send_message(message.from_user.id, botDB.all_users())
+
 
         # Запись работ сотрудников
         if message.text == '✅ Записать':
             await bot.send_message(message.from_user.id, 'Сейчас мы запишем вашу работу!\n'
-                                                         'Выберите тип деталей которые вы произвели: ', reply_markup=mark.detali)
-        if message.text == '50-тки':
-            await bot.send_message(message.from_user.id, '50')
-        if message.text == '100-тки':
-            await bot.send_message(message.from_user.id, '100')
+                                                         'Выберите тип деталей который вы произвели  ⬇', reply_markup=mark.inline_detali)
 
-        if message.text == '🔙 Меню':
-            await bot.send_message(message.from_user.id, 'Обратно в главное меню', reply_markup=mark.userMenu)
 
 
 

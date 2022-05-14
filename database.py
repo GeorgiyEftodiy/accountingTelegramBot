@@ -21,6 +21,14 @@ class botDB:
         result = self.cursor.execute("SELECT id FROM users WHERE user_id = ?", (user_id,))
         return bool(len(result.fetchall()))
 
+    def get_userid(self, user_id):
+        """Получаем id пользователя по его id-телеграма"""
+        with self.conn:
+            result = self.cursor.execute("SELECT id FROM users WHERE user_id = ?", (user_id,))
+            return result.fetchone()[0]
+
+
+
     def set_name(self, user_id, name):
         """Добавления имени пользователя"""
         with self.conn:
@@ -47,6 +55,8 @@ class botDB:
         with self.conn:
             return self.cursor.execute("UPDATE users SET signup = ? WHERE user_id =?",(signup, user_id,))
 
+
+
     def all_users(self):
         """Вывод всех сотрудников завода"""
         with self.conn:
@@ -54,6 +64,9 @@ class botDB:
             users = self.cursor.fetchall()
             text = '\n\n'.join([' - '.join(map(str, x)) for x in users])
             return str(text)
+
+    def add_work(self):
+        pass
 
     def close(self):
         """Закрытия соединения с БД"""
