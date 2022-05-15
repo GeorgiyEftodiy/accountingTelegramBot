@@ -5,6 +5,7 @@ import sqlite3
 
 # Класс в котором реализуется вся работа с базами данных
 class botDB:
+
     def __init__(self, db_file):
         """Инициализация соединения с БД"""
         self.conn = sqlite3.connect(db_file)
@@ -65,8 +66,20 @@ class botDB:
             text = '\n\n'.join([' - '.join(map(str, x)) for x in users])
             return str(text)
 
-    def add_work(self):
-        pass
+    def all_prod(self):
+        """Вывод всех сотрудников завода"""
+        with self.conn:
+            self.cursor.execute("SELECT *  FROM productions")
+            users = self.cursor.fetchall()
+            text = '\n\n'.join([' - '.join(map(str, x)) for x in users])
+            return str(text)
+
+
+    def add_work(self, user_id, type_detail, amount):
+        """Запись в таблицу производства"""
+        with self.conn:
+            self.cursor.execute("INSERT INTO productions(user_id, type_detail, amount) VALUES(?,?,?)", (user_id, type_detail, amount,))
+
 
     def close(self):
         """Закрытия соединения с БД"""
