@@ -56,6 +56,13 @@ class botDB:
         with self.conn:
             return self.cursor.execute("UPDATE users SET signup = ? WHERE user_id =?",(signup, user_id,))
 
+    def get_cost_detail(self, id):
+        with self.conn:
+            cost = self.cursor.execute("SELECT cost from details WHERE id = ?",(id,)).fetchall()
+            for row in cost:
+                cost = str(row[0])
+            return cost
+
 
 
     def all_users(self):
@@ -74,12 +81,10 @@ class botDB:
             text = '\n\n'.join([' - '.join(map(str, x)) for x in users])
             return str(text)
 
-
-    def add_work(self, user_id, type_detail, amount):
+    def add_work(self, user_id, type_detail, amount, summ,):
         """Запись в таблицу производства"""
         with self.conn:
-            self.cursor.execute("INSERT INTO productions(user_id, type_detail, amount) VALUES(?,?,?)", (user_id, type_detail, amount,))
-
+            self.cursor.execute("INSERT INTO productions(user_id, type_detail, amount, summ) VALUES(?,?,?,?)", (user_id, type_detail, amount, summ,))
 
     def close(self):
         """Закрытия соединения с БД"""

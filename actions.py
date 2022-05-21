@@ -43,8 +43,6 @@ async def general(message):
                                                 '"👨‍🦰 Личный кабинет" - Тут хранится информация о вас\n'
                                                 '"👥 Сотрудники" - Список всех сотрудников(пользователей бота)')
 
-
-
 # Обрабатывания функций
 @dp.message_handler(content_types='text')
 async def sign(message):
@@ -74,7 +72,7 @@ async def sign(message):
 
         # Информация о производстве
         if message.text == '🛠 Производство':
-            await bot.send_message(message.from_user.id, 'Список сотрудников ⬇️')
+            await bot.send_message(message.from_user.id, 'Работа на заводе ⬇️')
             await bot.send_message(message.from_user.id, botDB.all_prod())
 
 
@@ -85,14 +83,20 @@ async def sign(message):
                                                          '(После выбора просто допишите количество сделанных мешков)', reply_markup=mark.inline_detali)
         if '@zavodrezbot Тип(100) Количество=' in message.text:
             amount = message.text[33:]
-            botDB.add_work(message.from_user.id, '100', amount)
-            await bot.send_message(message.from_user.id, '✔️ Вы успешно добавили ' + amount + ' мешков типа 100-тки\n'
+            col = int(amount)
+            cost = int(botDB.get_cost_detail(2))
+            summ = col * cost
+            botDB.add_work(message.from_user.id, '100', amount, summ)
+            await bot.send_message(message.from_user.id, '✔️ Вы успешно добавили ' + str(amount) + ' мешков типа 100-тки\n'
                                                          "Ваши общие результаты вы можете посмотреть в '👨‍🦰 Личный кабинет'")
 
         if '@zavodrezbot Тип(50) Количество=' in message.text:
             amount = message.text[32:]
-            botDB.add_work(message.from_user.id, '50', amount)
-            await bot.send_message(message.from_user.id, '✔️ Вы успешно добавили ' + amount + ' мешков типа 50-тки\n'
+            col = int(amount)
+            cost = int(botDB.get_cost_detail(1))
+            summ = col * cost
+            botDB.add_work(message.from_user.id, '50', amount, summ)
+            await bot.send_message(message.from_user.id, '✔️ Вы успешно добавили ' + str(amount) + ' мешков типа 50-тки\n'
                                                          "Ваши общие результаты вы можете посмотреть в '👨‍🦰 Личный кабинет'")
             # --------------------------------------------------------------
 
