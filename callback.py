@@ -1,4 +1,4 @@
-# Класс в котором описываются различные функции
+# Класс в котором описываются ответы на inline-кнопкм
 
 from aiogram import types
 import database
