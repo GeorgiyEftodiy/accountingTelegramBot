@@ -4,6 +4,20 @@
 from aiogram.types import ReplyKeyboardMarkup,\
                          KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup
 
+# Инлайн кнопка - добавить пользователя
+inline_btn_adduser = InlineKeyboardButton(text='Добавить сотрудника', switch_inline_query_current_chat ='Введите TelegramID пользователя:')
+inline_adduser = InlineKeyboardMarkup(row_width=2).add(inline_btn_adduser)
+
+# Инлайн кнопка - добавить пользователя
+inline_btn_deleteuser = InlineKeyboardButton(text='Удалить сотрудника сотрудника', switch_inline_query_current_chat ='Введите ID сотрудника:')
+inline_deleteuser = InlineKeyboardMarkup(row_width=2).add(inline_btn_deleteuser)
+
+# Инлайн кнопки для редакирования стоимости детали
+inline_edit_50 = InlineKeyboardButton(text='Тип:50-тки', switch_inline_query_current_chat ='Введите новую стоимость детали(50-тки):')
+inline_edit_100 = InlineKeyboardButton(text='Тип:100-тки', switch_inline_query_current_chat ='Введите новую стоимость детали(100-тки):')
+edit_detail = InlineKeyboardMarkup(row_width=2).add(inline_edit_50, inline_edit_100)
+
+
 # Инлайн кнопки - тип деталей
 inline_btn_50 = InlineKeyboardButton(text='50-тки', switch_inline_query_current_chat ='Тип(50) Количество=')
 inline_btn_100 = InlineKeyboardButton(text='100-тки', switch_inline_query_current_chat ='Тип(100) Количество=')

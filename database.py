@@ -43,20 +43,9 @@ class botDB:
                 signup = str(row[0])
             return signup
 
-    def get_signup(self, user_id):
-        """Получение этапа регистрации пользователя"""
-        with self.conn:
-            result = self.cursor.execute("SELECT signup FROM users WHERE user_id = ?", (user_id,)).fetchall()
-            for row in result:
-                signup = str(row[0])
-            return signup
-
-    def set_signup(self,user_id, signup):
-        """Изменения этапа регистрации пользователя"""
-        with self.conn:
-            return self.cursor.execute("UPDATE users SET signup = ? WHERE user_id =?",(signup, user_id,))
 
     def get_cost_detail(self, id):
+        """Берем стоимость детали из таблицы details"""
         with self.conn:
             cost = self.cursor.execute("SELECT cost from details WHERE id = ?",(id,)).fetchall()
             for row in cost:
@@ -64,11 +53,22 @@ class botDB:
             return cost
 
 
+    def new_cost(self, cost, id):
+        """Редактирования стоимости детали"""
+        with self.conn:
+            return self.cursor.execute("UPDATE details SET cost = ? WHERE id =?",(cost, id,))
+
+
+    def delete_user(self, id):
+        """Удаления пользователя из таблицы users"""
+        with self.conn:
+            return self.cursor.execute("DELETE FROM users WHERE id =?",(id,))
+
 
     def all_users(self):
         """Вывод всех сотрудников завода"""
         with self.conn:
-            self.cursor.execute("SELECT name  FROM users")
+            self.cursor.execute("SELECT id, name  FROM users")
             users = self.cursor.fetchall()
             text = '\n\n'.join([' - '.join(map(str, x)) for x in users])
             return str(text)
@@ -76,7 +76,7 @@ class botDB:
     def all_prod(self):
         """Вывод всех сотрудников завода"""
         with self.conn:
-            self.cursor.execute("SELECT *  FROM productions")
+            self.cursor.execute("SELECT date, user_id, amount, summ  FROM productions")
             users = self.cursor.fetchall()
             text = '\n\n'.join([' - '.join(map(str, x)) for x in users])
             return str(text)
