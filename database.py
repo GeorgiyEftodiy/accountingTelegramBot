@@ -76,15 +76,28 @@ class botDB:
     def all_prod(self):
         """Вывод всех сотрудников завода"""
         with self.conn:
-            self.cursor.execute("SELECT date, user_id, amount, summ  FROM productions")
+            self.cursor.execute("SELECT date, user_name, amount, type_detail, summ  FROM productions")
             users = self.cursor.fetchall()
             text = '\n\n'.join([' - '.join(map(str, x)) for x in users])
             return str(text)
 
-    def add_work(self, user_id, type_detail, amount, summ,):
+    def personal_prod(self, user_id):
+        """Вывод личной истории работ сотрудника"""
+        with self.conn:
+            self.cursor.execute("SELECT id_p, date, user_name, amount, summ  FROM productions WHERE user_id = ?", (user_id,))
+            users = self.cursor.fetchall()
+            text = '\n\n'.join([' - '.join(map(str, x)) for x in users])
+            return str(text)
+
+    def add_work(self, user_id, user_name, type_detail, amount, summ,):
         """Запись в таблицу производства"""
         with self.conn:
-            self.cursor.execute("INSERT INTO productions(user_id, type_detail, amount, summ) VALUES(?,?,?,?)", (user_id, type_detail, amount, summ,))
+            self.cursor.execute("INSERT INTO productions(user_id, user_name, type_detail, amount, summ) VALUES(?,?,?,?,?)", (user_id, user_name, type_detail, amount, summ,))
+
+    def delete_work(self, id_p):
+        """Удаления записи из таблицы 'productions'"""
+        with self.conn:
+            return self.cursor.execute("DELETE FROM productions WHERE id_p =?", (id_p,))
 
     def close(self):
         """Закрытия соединения с БД"""
