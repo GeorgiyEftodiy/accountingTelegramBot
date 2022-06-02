@@ -29,7 +29,6 @@ class botDB:
             return result.fetchone()[0]
 
 
-
     def set_name(self, user_id, name):
         """Добавления имени пользователя"""
         with self.conn:
@@ -52,7 +51,6 @@ class botDB:
                 cost = str(row[0])
             return cost
 
-
     def new_cost(self, cost, id):
         """Редактирования стоимости детали"""
         with self.conn:
@@ -64,30 +62,31 @@ class botDB:
         with self.conn:
             return self.cursor.execute("DELETE FROM users WHERE id =?",(id,))
 
-
     def all_users(self):
         """Вывод всех сотрудников завода"""
         with self.conn:
             self.cursor.execute("SELECT id, name  FROM users")
             users = self.cursor.fetchall()
-            text = '\n\n'.join([' - '.join(map(str, x)) for x in users])
-            return str(text)
+            line = '\n\n'.join([' ➖ '.join(map(str, x)) for x in users])
+            return str(line)
+
 
     def all_prod(self):
-        """Вывод всех сотрудников завода"""
+        """Вывод всех работ на заводе"""
         with self.conn:
             self.cursor.execute("SELECT date, user_name, amount, type_detail, summ  FROM productions")
             users = self.cursor.fetchall()
-            text = '\n\n'.join([' - '.join(map(str, x)) for x in users])
+            text = '\n\n'.join([' ┃ '.join(map(str, x)) for x in users])
             return str(text)
 
     def personal_prod(self, user_id):
         """Вывод личной истории работ сотрудника"""
         with self.conn:
-            self.cursor.execute("SELECT id_p, date, user_name, amount, summ  FROM productions WHERE user_id = ?", (user_id,))
+            self.cursor.execute("SELECT id_p, date, user_name, amount, type_detail, summ  FROM productions WHERE user_id = ?", (user_id,))
             users = self.cursor.fetchall()
-            text = '\n\n'.join([' - '.join(map(str, x)) for x in users])
+            text = '\n\n'.join([' ┃ '.join(map(str, x)) for x in users])
             return str(text)
+
 
     def add_work(self, user_id, user_name, type_detail, amount, summ,):
         """Запись в таблицу производства"""
@@ -98,6 +97,23 @@ class botDB:
         """Удаления записи из таблицы 'productions'"""
         with self.conn:
             return self.cursor.execute("DELETE FROM productions WHERE id_p =?", (id_p,))
+
+
+    def get_amount_work(self, user_id):
+        """Функция для определения общего количества сделанных мешков сотрудником"""
+        with self.conn:
+            workamount = self.cursor.execute("SELECT SUM(amount) FROM productions WHERE user_id = ?", (user_id,))
+            for row in workamount:
+                workamount = str(row[0])
+            return workamount
+
+    def get_money_work(self, user_id):
+        """Функция для подсчета денег от работ сотрудника"""
+        with self.conn:
+            money = self.cursor.execute("SELECT SUM(summ) FROM productions WHERE user_id = ?", (user_id,))
+            for row in money:
+                money = str(row[0])
+            return money
 
     def close(self):
         """Закрытия соединения с БД"""

@@ -16,15 +16,16 @@ botDB = botDB('db.db')
 # Список пользователей которые имеют права админа
 adminlist = ['1463808811']
 
-# Регистрация пользователя
+
+# Обработчик стартовой команды "start"
 @dp.message_handler(commands = ['start'])
 async def start(message: types.Message):
 
     if (botDB.user_exist(message.from_user.id)):
-        await bot.send_message(message.from_user.id, 'Добро пожаловать!\n'
-                                                     'Вы были найдены в базе данных, значит вы являетесь сотрудником нашего предприятия!\n'
-                                                     'Ваше имя ({1} - {0}) тоже записано в базе данных.\n'
-                                                     '🎉 Удачного пользованья 🎉'.format(message.from_user.first_name, message.from_user.last_name ), reply_markup=mark.userMenu)
+        await bot.send_message(message.from_user.id, '🔻 Добро пожаловать!\n'
+                                                     '🔻 Вы были успешно авторизованы!\n'
+                                                     '🔻 Ваше имя ({1} - {0}) записано в базе данных.\n'
+                                                     '♣️  Удачного пользованья ♣️'.format(message.from_user.first_name, message.from_user.last_name ), reply_markup=mark.userMenu)
 
         if (botDB.get_name(message.from_user.id)) == 'setname':
             name = str(message.from_user.first_name) + ' ' + str(message.from_user.last_name)
@@ -52,6 +53,15 @@ async def general(message):
                                                 'и в конце сообщения которое появится, допишите номер записи работы которую нужно удалить и отправте сообщение боту '
                                                 '(Чтобы узнать номер записи работы которая вам нужна нажмите на кнопку "⏱ История")')
 
+
+# Удаление истории работ сотрудника
+@dp.message_handler(commands=['Очистка', 'очистка', 'ОЧИСТКА'])
+async def adduser(message):
+    if (botDB.user_exist(message.from_user.id)):
+        await bot.send_message(message.from_user.id,'Ваша история работ была очищена, удачи в новом месяце! 👍')
+    else:
+        await bot.send_message(message.from_user.id, 'У вас нет прав для использования данной команды ❗️❗️❗️')
+
 # Добавления сотрудника
 @dp.message_handler(commands=['adduser'])
 async def adduser(message):
@@ -62,7 +72,7 @@ async def adduser(message):
 
 
 # Удаления сотрудника
-@dp.message_handler(commands=['deleteuser'])
+@dp.message_handler(commands=['deletuser'])
 async def deleteuser(message):
     if str(message.from_user.id) in adminlist:
         await bot.send_message(message.from_user.id,'👨‍🦱 Удаления сотрудника из БД:', reply_markup=mark.inline_deleteuser)
@@ -118,8 +128,8 @@ async def sign(message):
                 await bot.send_message(message.from_user.id, '⏳ Дата: ' + str(datetime.datetime.today().strftime("%d-%m-%Y")) + '\n\n'
                                                              '👨‍🦰 Ваш аккаунт: ' + botDB.get_name(message.from_user.id) + '\n'
                                                              '📲 Ваш TelegramID: ' + str(message.from_user.id) + '\n\n'
-                                                             '✔️ Сделанных мешков: \n'
-                                                             '✔️ Заработано денег: ', reply_markup=mark.inline_personalArea)
+                                                             '✔️ Сделанных мешков: ' + botDB.get_amount_work(message.from_user.id) + '\n'
+                                                             '✔️ Заработано денег: ' + botDB.get_money_work(message.from_user.id) + '\n', reply_markup=mark.inline_personalArea)
 
             # Вывод информации о сотрудниках
             if message.text == '👥 Сотрудники':
@@ -159,11 +169,21 @@ async def sign(message):
             if message.text == '❌ Удалить запись работы':
                 await bot.send_message(message.from_user.id, 'Чтобы удалить неверную запись о вашей работе нажмите на кнопку "Удалить запись" ⬇️\n'
                                                              '(После нажатия вам нужно будет дописать номер операции которая должна быть удалена! '
-                                                             'Если вы не знаете номер то нажмите на кнопку "История" и найдите нужный вам номер)', reply_markup=mark.inline_deleteprod)
+                                                             'Если вы не знаете номер то нажмите на кнопку  "История" и найдите нужный вам номер)', reply_markup=mark.inline_deleteprod)
 
             if '@zavodrezbot Введите номер неверной записи:' in message.text:
                 botDB.delete_work(message.text[43:])
                 await bot.send_message(message.from_user.id, '✔️ Вы успешно удалили запись с номером: ' + str(message.text[43:]))
+
+
+            # Создание отчета работ за месяц
+            if message.text == '📈 Создать отчет':
+                await bot.send_message(message.from_user.id,'🔹 Отчет работ: \n'
+                                                            '⏳ Дата: ' + str(datetime.datetime.today().strftime("%d-%m-%Y")) + '\n\n'
+                                                            'История работ ⬇\n' + botDB.personal_prod(message.from_user.id) + '\n\n'
+                                                            'Итоги ⬇\n' + '✅Сделанных мешков: ' + botDB.get_amount_work(message.from_user.id) + '\n' +
+                                                            '✅Заработано денег: ' + botDB.get_money_work(message.from_user.id) + '\n\n'
+                                                            '👨‍🦰 Сотрудник: {} {}'.format(message.from_user.first_name, message.from_user.last_name ))
 
 
     else:

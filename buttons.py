@@ -4,10 +4,11 @@
 from aiogram.types import ReplyKeyboardMarkup,\
                          KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup
 
+
+
 # Инлайн кнпки для личного кабинета
 inline_btn_history = InlineKeyboardButton(text='⏱ История работы', callback_data='History')
-inline_btn_total = InlineKeyboardButton(text='📈 Создать отчет за текущий месяц', callback_data='otchet')
-inline_personalArea = InlineKeyboardMarkup(row_width=1).add(inline_btn_total, inline_btn_history)
+inline_personalArea = InlineKeyboardMarkup(row_width=1).add(inline_btn_history)
 
 
 # Инлайн кнопки - Удаления неверной записи
@@ -44,6 +45,7 @@ personal = KeyboardButton('👨‍🦰 Личный кабинет')
 usersBtn = KeyboardButton('👥 Сотрудники')
 work = KeyboardButton('🛠 Производство')
 deletework = KeyboardButton('❌ Удалить запись работы')
-userMenu = ReplyKeyboardMarkup(resize_keyboard=True, row_width=2).add(zapisBtn, personal, usersBtn, work, deletework)
+otchet = KeyboardButton('📈 Создать отчет')
+userMenu = ReplyKeyboardMarkup(resize_keyboard=True, row_width=2).add(zapisBtn, personal, usersBtn, work, deletework, otchet)
 
 
