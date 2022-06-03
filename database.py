@@ -115,6 +115,12 @@ class botDB:
                 money = str(row[0])
             return money
 
+    def clear_history(self, user_id):
+        """Удалиение всей истории работ сотрудника"""
+        with self.conn:
+            return self.cursor.execute("DELETE FROM productions WHERE user_id = ?", (user_id,))
+
+
     def close(self):
         """Закрытия соединения с БД"""
         self.conn.close()
