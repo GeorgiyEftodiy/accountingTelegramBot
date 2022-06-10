@@ -16,7 +16,6 @@ botDB = botDB('db.db')
 # Список пользователей которые имеют права админа
 adminlist = ['1463808811']
 
-
 # Обработчик стартовой команды "start"
 @dp.message_handler(commands = ['start'])
 async def start(message: types.Message):
