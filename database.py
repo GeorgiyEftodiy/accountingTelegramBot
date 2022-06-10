@@ -70,7 +70,6 @@ class botDB:
             line = '\n\n'.join([' ➖ '.join(map(str, x)) for x in users])
             return str(line)
 
-
     def all_prod(self):
         """Вывод всех работ на заводе"""
         with self.conn:
