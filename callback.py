@@ -1,7 +1,6 @@
 # Класс в котором описываются ответы на inline-кнопкм
 
 from aiogram import types
-import database
 from dispatcher import dp, bot
 
 from database import botDB # Импорт базы данных и ее инициализация

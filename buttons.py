@@ -23,7 +23,7 @@ inline_adduser = InlineKeyboardMarkup(row_width=2).add(inline_btn_adduser)
 
 
 # Инлайн кнопка - Удалить пользователя
-inline_btn_deleteuser = InlineKeyboardButton(text='Удалить сотрудника сотрудника', switch_inline_query_current_chat ='Введите ID сотрудника:')
+inline_btn_deleteuser = InlineKeyboardButton(text='Удалить сотрудника', switch_inline_query_current_chat ='Введите ID сотрудника:')
 inline_deleteuser = InlineKeyboardMarkup(row_width=2).add(inline_btn_deleteuser)
 
 
